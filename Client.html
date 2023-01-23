@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Reverse Shell Listener</title>
+    <script>
+      var connection;
+      function startListener() {
+        // Create a new WebSocket connection to the specified IP and port
+        connection = new WebSocket("ws://" + document.getElementById("ip").value + ":" + document.getElementById("port").value);
+  
+        // Add a listener for the 'message' event to handle incoming messages
+        connection.onmessage = function (e) {
+          var textbox = document.getElementById("output");
+          textbox.value += "Server: " + e.data + "\n";
+          textbox.scrollTop = textbox.scrollHeight;
+        }
+  
+        // Add a listener for the 'open' event to display a message when the connection is established
+        connection.onopen = function (e) {
+          var textbox = document.getElementById("output");
+          textbox.value += "Connected to " + document.getElementById("ip").value + ":" + document.getElementById("port").value + "\n";
+        }
+      }
+  
+      function sendCommand() {
+        // Send the command to the server
+        connection.send(document.getElementById("command").value);
+  
+        // Display the command in the output textbox
+        var textbox = document.getElementById("output");
+        textbox.value += "Client: " + document.getElementById("command").value + "\n";
+        textbox.scrollTop = textbox.scrollHeight;
+  
+        // Clear the command input box
+        document.getElementById("command").value = "";
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Reverse Shell Listener</h1>
+    <label for="ip">IP:</label>
+    <input type="text" id="ip" value="127.0.0.1">
+    <br>
+    <label for="port">Port:</label>
+    <input type="text" id="port" value="8080">
+    <br>
+    <button onclick="startListener()">Start Listener</button>
+    <br><br>
+    <textarea id="output" rows="20" cols="50" readonly></textarea>
+    <br>
+    <label for="command">Command:</label>
+    <input type="text" id="command">
+    <button onclick="sendCommand()">Send</button>
+  </body>
+</html>
