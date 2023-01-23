@@ -11,7 +11,7 @@ $client = $listener.AcceptTcpClient()
 $stream = $client.GetStream()
 
 # Send a message to the client
-$sendbytes = [System.Text.Encoding]::ASCII.GetBytes("Welcome to the C&C")
+$sendbytes = [System.Text.Encoding]::ASCII.GetBytes("New Client Connected")
 $stream.Write($sendbytes,0,$sendbytes.Length)
 
 # Receive commands from the client
